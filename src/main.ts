@@ -142,19 +142,19 @@ function declareWinner() {
 }
 
 function playerWins() {
-  feedbackElement!.innerHTML = 'You win!';
+  feedbackElement!.innerHTML = '<span class="win">You Win!</span>';
   state.wins++;
   updateRecord();
 }
 
 function dealerWins() {
-  feedbackElement!.innerHTML = 'You lose!';
+  feedbackElement!.innerHTML = '<span class="lose">You Lose!</span>';
   state.losses++;
   updateRecord();
 }
 
 function push() {
-  feedbackElement!.innerHTML = 'Push';
+  feedbackElement!.innerHTML = '<span class="push">Push</span>';
 }
 
 function determineOutcome(hand: Hand): Outcome {
@@ -176,19 +176,19 @@ function determineOutcome(hand: Hand): Outcome {
 function declareSplitWinners() {
   const feedback: string[] = [];
   for (const [index, hand] of Object.entries(state.splitHands)) {
-    const handName = `Split #${Number(index) + 1}`;
+    const handName = `Hand ${Number(index) + 1}`;
     const outcome = determineOutcome(hand);
     switch (outcome) {
       case 'win':
-        feedback.push(`${handName} Won!`);
+        feedback.push(`${handName}&nbsp;<span class="win">Won!</span>`);
         state.wins++;
         break;
       case 'lose':
-        feedback.push(`${handName} Lost!`);
+        feedback.push(`${handName}&nbsp;<span class="lose">Lost!</span>`);
         state.losses++;
         break;
       case 'push':
-        feedback.push(`${handName} is a Push`);
+        feedback.push(`${handName} is a&nbsp;<span class="push">Push</span>`);
         break;
     }
   }
