@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackjack</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Blackjack</h1>
+    <div class="score">
+      <div>
+        <strong>Wins:</strong> <span id="wins">0</span>
+      </div>
+      <div>
+        <button id="clear" class="link">Clear Score</button>
+      </div>
+      <div>
+        <strong>Losses</strong>: <span id="losses">0</span>
+      </div>
+    </div>
+    <h2>Dealer - <span id="dealerPoints"></span></h2>
+    <div id="dealerHand" class="card"></div>
+    <h2>You - <span id="playerPoints"></span></h2>
+    <div id="playerHand" class="card"></div>
+    <div class="actions">
+      <button id="hit">Hit</button>
+      <button id="split">Split</button>
+      <button id="continue" hidden>Continue</button>
+      <button id="deal">Deal</button>
+      <button id="stand">Stand</button>
+    </div>
+    <h2 id="result"></h2>
+    <div id="split1"></div>
+    <div id="split2"></div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
