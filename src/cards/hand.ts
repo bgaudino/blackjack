@@ -35,6 +35,14 @@ export class Hand {
     return this.value() > 21;
   }
 
+  isSoft() {
+    return !!this.cards.find((c) => c.value === 1);
+  }
+
+  isHard() {
+    return !this.isSoft();
+  }
+
   empty() {
     this.cards = [];
   }

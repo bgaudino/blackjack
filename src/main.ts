@@ -12,12 +12,14 @@ const dealButton = document.querySelector<HTMLButtonElement>('#deal');
 const splitButton = document.querySelector<HTMLButtonElement>('#split');
 const continueButton = document.querySelector<HTMLButtonElement>('#continue');
 const clearScoreButton = document.querySelector<HTMLButtonElement>('#clear');
+const suggestButton = document.querySelector<HTMLButtonElement>('#suggest');
 hitButton!.onclick = hit;
 standButton!.onclick = stand;
 dealButton!.onclick = handleGameStart;
 splitButton!.onclick = split;
 continueButton!.onclick = handleSplit;
 clearScoreButton!.onclick = clearScore;
+suggestButton!.onclick = suggest;
 
 // DOM elements
 const playerHandElement = document.querySelector<HTMLDivElement>('#playerHand');
@@ -275,12 +277,14 @@ function showActions() {
   standButton!.hidden = false;
   dealButton!.hidden = true;
   splitButton!.hidden = state.split !== null || !playerHand.isSplitable();
+  suggestButton!.hidden = false;
 }
 
 function hideActions() {
   hitButton!.hidden = true;
   standButton!.hidden = true;
   splitButton!.hidden = true;
+  suggestButton!.hidden = true;
 }
 
 // Game start end
@@ -361,4 +365,70 @@ function clearScore() {
   state.losses = 0;
   updateRecord();
   clearPersistedRecord();
+}
+
+function getActiveHand() {
+  if (state.split === null) {
+    return playerHand;
+  }
+  return state.splitHands[state.split];
+}
+
+function suggest() {
+  const action = getSuggestion();
+  if (action === 'hit') hitButton?.focus();
+  if (action === 'stand') standButton?.focus();
+  if (action === 'split') splitButton?.focus();
+}
+
+function getSuggestion() {
+  const hand = getActiveHand();
+  const playerValue = hand.value();
+  const dealerValue = dealerHand.cards[1].points();
+
+  if (hand instanceof PlayerHand && hand.isSplitable()) {
+    const splitValue = hand.cards[0].value;
+    if (splitValue === 11 || splitValue === 8) {
+      return 'split';
+    }
+    if (splitValue === 9) {
+      return dealerValue === 7 || dealerValue >= 10 ? 'stand' : 'split';
+    }
+    if (splitValue === 7) {
+      return dealerValue < 8 ? 'split' : dealerValue === 10 ? 'stand' : 'hit';
+    }
+    if (splitValue === 6) {
+      return dealerValue > 7 ? 'hit' : 'split';
+    }
+    if (splitValue === 4) {
+      return dealerValue > 3 && dealerValue < 7 ? 'split' : 'hit';
+    }
+    if (splitValue === 3) {
+      return dealerValue > 8 ? 'hit' : 'split';
+    }
+    if (splitValue === 2) {
+      return dealerValue > 7 ? 'hit' : 'split';
+    }
+  }
+
+  if (playerHand.isHard()) {
+    if (playerValue >= 17) {
+      return 'stand';
+    }
+    if (playerValue >= 13) {
+      return dealerValue > 6 ? 'hit' : 'stand';
+    }
+    if (playerValue == 12) {
+      return dealerValue < 4 || dealerValue > 6 ? 'hit' : 'stand';
+    }
+    return 'hit';
+  }
+
+  if (playerValue >= 19) {
+    return 'stand';
+  }
+  if (playerValue == 18) {
+    return dealerValue > 8 && dealerValue < 11 ? 'hit' : 'stand';
+  }
+  return 'hit';
 }
