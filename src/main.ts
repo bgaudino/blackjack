@@ -10,14 +10,12 @@ const hitButton = document.querySelector<HTMLButtonElement>('#hit');
 const standButton = document.querySelector<HTMLButtonElement>('#stand');
 const dealButton = document.querySelector<HTMLButtonElement>('#deal');
 const splitButton = document.querySelector<HTMLButtonElement>('#split');
-const continueButton = document.querySelector<HTMLButtonElement>('#continue');
 const clearScoreButton = document.querySelector<HTMLButtonElement>('#clear');
 const suggestButton = document.querySelector<HTMLButtonElement>('#suggest');
 hitButton!.onclick = hit;
 standButton!.onclick = stand;
 dealButton!.onclick = handleGameStart;
 splitButton!.onclick = split;
-continueButton!.onclick = handleSplit;
 clearScoreButton!.onclick = clearScore;
 suggestButton!.onclick = suggest;
 
@@ -61,15 +59,9 @@ function hit() {
   playerHand.addCards(deck.deal(numCards));
   renderPlayerHand();
 
-  if (playerHand.isBusted()) {
-    if (state.split === null) {
-      handleBust();
-      return;
-    }
+  if (playerHand.isBusted() || playerHand.isBlackjack()) {
     if (state.split === 0) {
-      state.split = 1;
-      continueButton!.hidden = false;
-      hideActions();
+      handleEndOfHand();
       return;
     }
     state.split = null;
@@ -79,14 +71,13 @@ function hit() {
 
 function stand() {
   if (state.split === 0) {
-    state.split = 1;
-    continueButton!.hidden = false;
-    hideActions();
+    handleEndOfHand();
     return;
   }
 
   dealerHand.play(deck);
   renderDealerHand();
+  state.split = null;
   handleGameOver();
 }
 
@@ -112,16 +103,11 @@ function handleSplit() {
 
   renderPlayerHand();
   showActions();
-  continueButton!.hidden = true;
 }
 
-// Results
-function handleBlackjack() {
-  handleGameOver();
-}
-
-function handleBust() {
-  handleGameOver();
+function handleEndOfHand() {
+  state.split = 1;
+  handleSplit();
 }
 
 function declareWinner() {
@@ -314,7 +300,6 @@ function handleGameStart() {
 
 function handleGameOver() {
   state.isOver = true;
-  continueButton!.hidden = true;
   dealButton!.hidden = false;
   hideActions();
   renderDealerHand();
