@@ -146,16 +146,15 @@ function push() {
 }
 
 function determineOutcome(hand: Hand): Outcome {
+  const dealerValue = dealerHand.value();
+  const playerValue = hand.value();
   if (
     hand.isBusted() ||
-    (dealerHand.value() > hand.value() && !dealerHand.isBusted())
+    (dealerValue > playerValue && !dealerHand.isBusted())
   ) {
     return 'lose';
   }
-  if (
-    dealerHand.isBusted() ||
-    (hand.value() > dealerHand.value() && !hand.isBusted())
-  ) {
+  if (dealerHand.isBusted() || playerValue > dealerValue) {
     return 'win';
   }
   return 'push';
@@ -396,7 +395,7 @@ function getSuggestion() {
     }
   }
 
-  if (playerHand.isHard()) {
+  if (hand.isHard()) {
     if (playerValue >= 17) {
       return 'stand';
     }
