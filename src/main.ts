@@ -54,7 +54,7 @@ handleGameStart();
 
 // Actions
 function hit() {
-  splitButton!.hidden = true;
+  splitButton!.disabled = true;
   const numCards = playerHand.cards.length > 0 ? 1 : 2;
   playerHand.addCards(deck.deal(numCards));
   renderPlayerHand();
@@ -82,7 +82,7 @@ function stand() {
 }
 
 function split() {
-  splitButton!.hidden = true;
+  splitButton!.disabled = true;
   if (!playerHand.isSplitable()) return;
 
   for (const card of playerHand.cards) {
@@ -259,18 +259,18 @@ function renderSplitHands() {
 }
 
 function showActions() {
-  hitButton!.hidden = false;
-  standButton!.hidden = false;
-  dealButton!.hidden = true;
-  splitButton!.hidden = state.split !== null || !playerHand.isSplitable();
-  suggestButton!.hidden = false;
+  hitButton!.disabled = false;
+  standButton!.disabled = false;
+  dealButton!.disabled = true;
+  splitButton!.disabled = state.split !== null || !playerHand.isSplitable();
+  suggestButton!.disabled = false;
 }
 
 function hideActions() {
-  hitButton!.hidden = true;
-  standButton!.hidden = true;
-  splitButton!.hidden = true;
-  suggestButton!.hidden = true;
+  hitButton!.disabled = true;
+  standButton!.disabled = true;
+  splitButton!.disabled = true;
+  suggestButton!.disabled = true;
 }
 
 // Game start end
@@ -295,12 +295,12 @@ function handleGameStart() {
   renderDealerHand();
   renderPlayerHand();
 
-  if (playerHand.isBlackjack()) handleBlackjack();
+  if (playerHand.isBlackjack()) handleGameOver();
 }
 
 function handleGameOver() {
   state.isOver = true;
-  dealButton!.hidden = false;
+  dealButton!.disabled = false;
   hideActions();
   renderDealerHand();
   renderPlayerHand();
