@@ -12,6 +12,17 @@ export class Hand {
     this.cards = [...this.cards, ...cards];
   }
 
+  hardValue() {
+    return this.cards.reduce((prev, curr) => prev + curr.value(), 0);
+  }
+
+  softValue() {
+    return this.cards.reduce(
+      (prev, curr) => prev + (curr.isAce() ? 1 : curr.value()),
+      0
+    );
+  }
+
   value() {
     let sum = this.cards.reduce((prev, curr) => prev + curr.value(), 0);
 
@@ -36,7 +47,9 @@ export class Hand {
   }
 
   isSoft() {
-    return !!this.cards.find((c) => c.rank === 1);
+    const hardValue = this.hardValue();
+    const softValue = this.softValue();
+    return hardValue < 21 && hardValue !== softValue;
   }
 
   isHard() {

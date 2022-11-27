@@ -242,13 +242,10 @@ export default class Game {
 
   renderHand(hand: Hand) {
     const isDealer = hand instanceof DealerHand;
-    if (this.splitHands.length > 0 && !isDealer) {
-      this.renderSplitHands();
-      return;
-    }
-
     if (isDealer) {
       this.elements.dealerHand!.innerHTML = this.dealerHand.html(this.isOver);
+    } else if (this.splitHands.length > 0) {
+      this.renderSplitHands();
     } else {
       this.elements.playerHand!.innerHTML = this.playerHand.html();
     }
