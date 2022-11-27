@@ -18,4 +18,6 @@ export interface DOMElements {
   playerHand: DOMElement;
   dealerHand: DOMElement;
   feedback: DOMElement;
+  wins: DOMElement;
+  losses: DOMElement;
 }

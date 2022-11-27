@@ -68,12 +68,10 @@ export class Hand {
         }">${curr.html}</span>`,
       ''
     );
-    const feedback = active
-      ? this.isBlackjack()
-        ? ' Blackjack!'
-        : this.isBusted()
-        ? ' Bust!'
-        : ''
+    const feedback = this.isBlackjack()
+      ? ' Blackjack!'
+      : this.isBusted()
+      ? ' Bust!'
       : '';
     return `
       <div>

@@ -116,9 +116,8 @@ button {
 button:hover {
   background-color: var(--btn-bg-hover);
 }
-button:focus,
+button:focus, 
 button:focus-visible {
-  border-color: var(--btn-bg-hover);
   outline: 4px auto -webkit-focus-ring-color;
 }
 button:disabled {

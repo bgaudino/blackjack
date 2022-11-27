@@ -14,6 +14,8 @@ const elements = {
   playerHand: document.querySelector<HTMLDivElement>('#playerHand'),
   dealerHand: document.querySelector<HTMLDivElement>('#dealerHand'),
   feedback: document.querySelector<HTMLDivElement>('#result'),
+  wins: document.querySelector<HTMLDivElement>('#wins'),
+  losses: document.querySelector<HTMLDivElement>('#losses'),
 };
 
 const game = new Game(buttons, elements);

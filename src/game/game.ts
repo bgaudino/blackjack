@@ -29,7 +29,6 @@ export default class Game {
       this.wins = 0;
       this.losses = 0;
     }
-    this.renderRecord();
 
     this.buttons = buttons;
     this.elements = elements;
@@ -61,6 +60,7 @@ export default class Game {
     this.dealerHand.empty();
     this.splitHands = [];
     this.splitIndex = null;
+    this.renderRecord();
     this.deal();
     if (this.playerHand.isBlackjack()) {
       this.end();
@@ -106,6 +106,7 @@ export default class Game {
   }
 
   hit() {
+    this.elements.feedback!.innerHTML = '';
     this.playerHand.addCards(this.deck.deal());
     this.renderHand(this.playerHand);
 
@@ -120,6 +121,7 @@ export default class Game {
   }
 
   stand() {
+    this.elements.feedback!.innerHTML = '';
     if (this.splitIndex === 0) {
       this.splitIndex = 1;
       this.continueSplit();
@@ -129,6 +131,7 @@ export default class Game {
   }
 
   beginSplit() {
+    this.elements.feedback!.innerHTML = '';
     for (const card of this.playerHand.cards) {
       this.splitHands.push(new Hand([card]));
     }
@@ -146,6 +149,9 @@ export default class Game {
     ]);
     this.renderSplitHands();
     this.enableActions();
+    if (this.playerHand.isBlackjack()) {
+      this.stand();
+    }
   }
 
   determineOutcome(hand: Hand): Outcome {
@@ -185,7 +191,9 @@ export default class Game {
   }
 
   suggest() {
-    this.buttons[this.getSuggestion()]?.focus();
+    const suggestion = this.getSuggestion();
+    this.buttons[suggestion]?.focus();
+    this.elements.feedback!.innerHTML = suggestion;
   }
 
   getSuggestion() {
@@ -264,10 +272,8 @@ export default class Game {
   }
 
   renderRecord() {
-    document.querySelector<HTMLSpanElement>('#wins')!.textContent =
-      this.wins.toString();
-    document.querySelector<HTMLSpanElement>('#losses')!.textContent =
-      this.losses.toString();
+    this.elements.wins!.textContent = this.wins.toString();
+    this.elements.losses!.textContent = this.losses.toString();
   }
 
   renderOutcome(outcome: Outcome) {
@@ -294,7 +300,7 @@ export default class Game {
           Number(index) + 1
         }: <span class="${outcome}">${feedback}</span></>`;
       })
-      .join(' ');
+      .join('<br>');
   }
 
   persistRecord() {
