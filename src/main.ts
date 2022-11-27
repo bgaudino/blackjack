@@ -1,5 +1,4 @@
 import Game from './game/game';
-import './style.css';
 
 const buttons = {
   hit: document.querySelector<HTMLButtonElement>('#hit'),
