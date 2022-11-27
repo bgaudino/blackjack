@@ -12,7 +12,7 @@ export interface Buttons {
   split: Button;
   deal: Button;
   suggest: Button;
-  clear: Button;
+  reset: Button;
 }
 export interface DOMElements {
   playerHand: DOMElement;

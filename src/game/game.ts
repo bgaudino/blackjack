@@ -46,14 +46,11 @@ export default class Game {
     this.stand = this.stand.bind(this);
     this.buttons.stand!.onclick = this.stand;
 
-    this.clearScore = this.clearScore.bind(this);
-    this.buttons.clear!.onclick = this.clearScore;
-
     this.suggest = this.suggest.bind(this);
     this.buttons.suggest!.onclick = this.suggest;
 
-    this.clearRecord = this.clearRecord.bind(this);
-    this.buttons.clear!.onclick = this.clearRecord;
+    this.reset = this.reset.bind(this);
+    this.buttons.reset!.onclick = this.reset;
   }
 
   start() {
@@ -176,11 +173,6 @@ export default class Game {
     [hit, stand, suggest].forEach((b) => (b!.disabled = false));
     split!.disabled =
       !this.playerHand.isSplitable() || this.splitIndex !== null;
-  }
-
-  clearScore() {
-    this.wins = 0;
-    this.losses = 0;
   }
 
   getActiveHand() {
@@ -327,10 +319,11 @@ export default class Game {
     localStorage.setItem('losses', JSON.stringify(this.losses));
   }
 
-  clearRecord() {
+  reset() {
     this.wins = 0;
     this.losses = 0;
     this.persistRecord();
     this.renderRecord();
+    this.start();
   }
 }

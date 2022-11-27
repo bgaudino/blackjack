@@ -6,7 +6,7 @@ const buttons = {
   stand: document.querySelector<HTMLButtonElement>('#stand'),
   deal: document.querySelector<HTMLButtonElement>('#deal'),
   split: document.querySelector<HTMLButtonElement>('#split'),
-  clear: document.querySelector<HTMLButtonElement>('#clear'),
+  reset: document.querySelector<HTMLButtonElement>('#reset'),
   suggest: document.querySelector<HTMLButtonElement>('#suggest'),
 };
 
