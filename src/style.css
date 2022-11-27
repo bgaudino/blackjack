@@ -6,6 +6,8 @@
   --red: #ff3322;
   --big-card: 120px;
   --small-card: 60px;
+  --btn-bg: #33c3d0;
+  --btn-bg-hover: #1eaedb;
 
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   color: var(--black);
@@ -32,24 +34,24 @@ h1 {
   text-align: center;
 }
 
-#result {
+#score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-transform: capitalize;
-  line-height: 2rem;
+  margin-bottom: 2rem;
+}
+
+.text-large {
+  font-weight: bold;
+  font-size: x-large;
+  margin-bottom: 1rem;
 }
 
 .card {
   line-height: var(--big-card);
-}
-
-.hand-title {
-  font-size: large;
-  font-weight: bold;
-}
-
-.score {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .button-container {
@@ -70,6 +72,12 @@ h1 {
 
 .playing-card.inactive {
   font-size: var(--small-card);
+}
+
+.points {
+  font-weight: bold;
+  font-size: large;
+  line-height: normal;
 }
 
 .split {
@@ -102,15 +110,19 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
-  color: var(--black);
-}
-button:disabled {
-  cursor: not-allowed;
+  color: #ffffff;
+  background-color: var(--btn-bg);
 }
 button:hover {
-  border-color: var(--blue);
+  background-color: var(--btn-bg-hover);
 }
 button:focus,
 button:focus-visible {
+  border-color: var(--btn-bg-hover);
   outline: 4px auto -webkit-focus-ring-color;
+}
+button:disabled {
+  cursor: not-allowed;
+  background-color: #dddddd;
+  color: #999999;
 }

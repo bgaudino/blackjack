@@ -48,13 +48,26 @@ export class Hand {
   }
 
   html(active = true) {
-    return this.cards.reduce(
+    const hand = this.cards.reduce(
       (prev, curr) =>
         `${prev}<span class="playing-card ${active ? 'active' : 'inactive'} ${
           curr.suit.name
         }">${curr.html}</span>`,
       ''
     );
+    const feedback = active
+      ? this.isBlackjack()
+        ? ' Blackjack!'
+        : this.isBusted()
+        ? ' Bust!'
+        : ''
+      : '';
+    return `
+      <div>
+        <div class="points">${this.value()}${feedback}</div>
+        <div>${hand}</div>
+      </div>
+    `;
   }
 }
 
@@ -80,6 +93,12 @@ export class DealerHand extends Hand {
 
   html(isRevealed = false) {
     if (isRevealed) return super.html(true);
-    return `<span class="playing-card">&#127136;</span><span class="playing-card ${this.cards[1].suit.name}">${this.cards[1].html}</span>`;
+    const hand = `<span class="playing-card">&#127136;</span><span class="playing-card ${this.cards[1].suit.name}">${this.cards[1].html}</span>`;
+    return `
+      <div>
+        <div class="points">${this.valueShowing()}</div>
+        <div>${hand}</div>
+      </div>
+    `;
   }
 }

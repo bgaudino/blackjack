@@ -69,7 +69,9 @@ export default class Game {
 
   end() {
     this.isOver = true;
-    this.dealerHand.play(this.deck);
+    if (!this.playerHand.isBusted()) {
+      this.dealerHand.play(this.deck);
+    }
     this.renderHand(this.dealerHand);
     this.disableActions();
     if (this.splitIndex === null) {
@@ -247,23 +249,9 @@ export default class Game {
 
     if (isDealer) {
       this.elements.dealerHand!.innerHTML = this.dealerHand.html(this.isOver);
-      const points = this.isOver ? hand.value() : hand.valueShowing();
-      this.elements.dealerPoints!.innerText = `${points}${this.getFeedback(
-        hand
-      )}`;
     } else {
       this.elements.playerHand!.innerHTML = this.playerHand.html();
-      this.elements.playerPoints!.innerHTML = `${hand.value()}${this.getFeedback(
-        hand
-      )}`;
     }
-  }
-
-  getFeedback(hand: Hand) {
-    if (hand instanceof DealerHand && !this.isOver) return '';
-    if (hand.isBlackjack()) return ' Blackjack!';
-    if (hand.isBusted()) return ' Busted!';
-    return '';
   }
 
   renderSplitHands() {
@@ -271,9 +259,6 @@ export default class Game {
     this.splitHands[this.splitIndex].empty();
     this.splitHands[this.splitIndex].addCards(this.playerHand.cards);
 
-    this.elements.playerPoints!.innerHTML = this.splitHands
-      .map((h) => `${h.value()}${this.getFeedback(h)}`)
-      .join(',');
     this.elements.playerHand!.innerHTML = this.splitHands
       .map(
         (h, i) => `<span class="split">${h.html(i === this.splitIndex)}</span>`
@@ -304,14 +289,15 @@ export default class Game {
   }
 
   renderSplitOutcomes(outcomes: Outcome[]) {
-    const html = Object.entries(outcomes).reduce((acc, [index, outcome]) => {
-      const feedback =
-        outcome === 'win' ? 'won!' : outcome === 'lose' ? 'lost!' : 'is a push';
-      return `${acc}<div>Hand ${
-        Number(index) + 1
-      } <span class="${outcome}">${feedback}</span></div>`;
-    }, '');
-    this.elements.feedback!.innerHTML = html;
+    this.elements.feedback!.innerHTML = Object.entries(outcomes)
+      .map(([index, outcome]) => {
+        const feedback =
+          outcome === 'win' ? 'won' : outcome === 'lose' ? 'lost' : 'pushed';
+        return `Hand ${
+          Number(index) + 1
+        }: <span class="${outcome}">${feedback}</span></>`;
+      })
+      .join(' ');
   }
 
   persistRecord() {

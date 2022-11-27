@@ -17,7 +17,5 @@ export interface Buttons {
 export interface DOMElements {
   playerHand: DOMElement;
   dealerHand: DOMElement;
-  playerPoints: DOMElement;
-  dealerPoints: DOMElement;
   feedback: DOMElement;
 }

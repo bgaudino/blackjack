@@ -11,17 +11,14 @@
 <body>
   <div id="app">
     <h1>Blackjack</h1>
-    <div class="score">
-      <div>
-        <strong>Wins:</strong> <span id="wins">0</span>
-      </div>
-      <div>
-        <strong>Losses</strong>: <span id="losses">0</span>
-      </div>
+    <div id="score" class="text-large">
+      <div>Wins: <span id="wins">0</span></div>
+      <div id="result"></div>
+      <div>Losses: <span id="losses">0</span></div>
     </div>
-    <p class="hand-title">Dealer - <span id="dealerPoints"></span></p>
+    <div class="text-large">Dealer</div>
     <div id="dealerHand" class="card"></div>
-    <p class="hand-title">You - <span id="playerPoints"></span></p>
+    <div class="text-large">You</div>
     <div id="playerHand" class="card"></div>
     <div class="button-container">
       <button id="hit">Hit</button>
@@ -33,7 +30,6 @@
       <button id="deal">Deal</button>
       <button id="suggest">Suggest</button>
     </div>
-    <h2 id="result"></h2>
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
