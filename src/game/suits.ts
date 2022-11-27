@@ -1,7 +1,3 @@
-// type SuitName = 'clubs' | 'diamonds' | 'hearts' | 'spades';
-// type SuitSymbol = '♣️' | '♦' | '❤️' | '♠️';
-// type SuitRank = 1 | 2 | 3 | 4;
-
 export const SPADES = {
   name: 'spades',
   symbol: '♠️',

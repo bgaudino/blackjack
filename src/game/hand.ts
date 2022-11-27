@@ -13,7 +13,7 @@ export class Hand {
   }
 
   value() {
-    let sum = this.cards.reduce((prev, curr) => prev + curr.points(), 0);
+    let sum = this.cards.reduce((prev, curr) => prev + curr.value(), 0);
 
     if (sum > 21) {
       for (const card of this.cards) {
@@ -36,7 +36,7 @@ export class Hand {
   }
 
   isSoft() {
-    return !!this.cards.find((c) => c.value === 1);
+    return !!this.cards.find((c) => c.rank === 1);
   }
 
   isHard() {
@@ -46,14 +46,21 @@ export class Hand {
   empty() {
     this.cards = [];
   }
+
+  html(active = true) {
+    return this.cards.reduce(
+      (prev, curr) =>
+        `${prev}<span class="playing-card ${active ? 'active' : 'inactive'} ${
+          curr.suit.name
+        }">${curr.html}</span>`,
+      ''
+    );
+  }
 }
 
 export class PlayerHand extends Hand {
   isSplitable() {
-    if (
-      this.cards.length !== 2 ||
-      this.cards[0].value !== this.cards[1].value
-    ) {
+    if (this.cards.length !== 2 || this.cards[0].rank !== this.cards[1].rank) {
       return false;
     }
     return true;
@@ -68,6 +75,11 @@ export class DealerHand extends Hand {
   }
 
   valueShowing() {
-    return this.cards[this.cards.length - 1].points();
+    return this.cards[this.cards.length - 1].value();
+  }
+
+  html(isRevealed = false) {
+    if (isRevealed) return super.html(true);
+    return `<span class="playing-card">&#127136;</span><span class="playing-card ${this.cards[1].suit.name}">${this.cards[1].html}</span>`;
   }
 }

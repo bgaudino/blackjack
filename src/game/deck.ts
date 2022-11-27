@@ -35,6 +35,7 @@ export default class Deck {
 
   reset() {
     this.cards = this.getInitialCards();
+    this.shuffle();
   }
 
   getInitialCards() {
