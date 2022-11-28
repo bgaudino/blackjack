@@ -1,6 +1,6 @@
-import Deck from '../blackjack/deck';
-import {DealerHand, PlayerHand, BlackjackHand} from '../blackjack/hand';
-import {Buttons, DOMElements, Outcome} from './types';
+import Deck from './deck';
+import {DealerHand, PlayerHand, BlackjackHand} from './hand';
+import {Buttons, DOMElements, Outcome} from '../cards/types';
 
 export default class Blackjack {
   deck: Deck;

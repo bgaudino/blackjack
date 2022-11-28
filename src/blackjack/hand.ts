@@ -1,4 +1,4 @@
-import {Hand} from '../cards/hand';
+import Hand from '../cards/hand';
 import Deck from '../cards/deck';
 import BlackjackCard from './card';
 

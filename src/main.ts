@@ -1,4 +1,4 @@
-import Blackjack from './cards/game';
+import Blackjack from './blackjack/game';
 
 const buttons = {
   hit: document.querySelector<HTMLButtonElement>('#hit'),

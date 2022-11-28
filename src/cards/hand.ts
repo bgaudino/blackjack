@@ -1,6 +1,6 @@
 import Card from './card';
 
-export class Hand {
+export default class Hand {
   cards: Card[];
 
   constructor(cards: Card[] = []) {
