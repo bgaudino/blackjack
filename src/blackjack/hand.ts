@@ -1,16 +1,9 @@
-import Card from './card';
-import Deck from './deck';
+import {Hand} from '../cards/hand';
+import Deck from '../cards/deck';
+import BlackjackCard from './card';
 
-export class Hand {
-  cards: Card[];
-
-  constructor(cards: Card[] = []) {
-    this.cards = cards;
-  }
-
-  addCards(cards: Card[]) {
-    this.cards = [...this.cards, ...cards];
-  }
+export class BlackjackHand extends Hand {
+  declare cards: BlackjackCard[];
 
   hardValue() {
     return this.cards.reduce((prev, curr) => prev + curr.value(), 0);
@@ -56,10 +49,6 @@ export class Hand {
     return !this.isSoft();
   }
 
-  empty() {
-    this.cards = [];
-  }
-
   html(active = true) {
     const hand = this.cards.reduce(
       (prev, curr) =>
@@ -82,7 +71,7 @@ export class Hand {
   }
 }
 
-export class PlayerHand extends Hand {
+export class PlayerHand extends BlackjackHand {
   isSplitable() {
     if (this.cards.length !== 2 || this.cards[0].rank !== this.cards[1].rank) {
       return false;
@@ -91,7 +80,7 @@ export class PlayerHand extends Hand {
   }
 }
 
-export class DealerHand extends Hand {
+export class DealerHand extends BlackjackHand {
   play(deck: Deck) {
     while (this.value() < 17) {
       this.addCards(deck.deal());

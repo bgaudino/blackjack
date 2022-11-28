@@ -39,14 +39,4 @@ export default class Card {
         return this.rank.toString();
     }
   }
-
-  value() {
-    if (this.isFaceCard()) {
-      return 10;
-    }
-    if (this.isAce()) {
-      return 11;
-    }
-    return this.rank;
-  }
 }

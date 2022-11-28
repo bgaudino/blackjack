@@ -1,4 +1,4 @@
-import Game from './game/game';
+import Blackjack from './cards/game';
 
 const buttons = {
   hit: document.querySelector<HTMLButtonElement>('#hit'),
@@ -17,5 +17,5 @@ const elements = {
   losses: document.querySelector<HTMLDivElement>('#losses'),
 };
 
-const game = new Game(buttons, elements);
+const game = new Blackjack(buttons, elements);
 game.start();

@@ -1,12 +1,12 @@
-import Deck from './deck';
-import {DealerHand, Hand, PlayerHand} from './hand';
+import Deck from '../blackjack/deck';
+import {DealerHand, PlayerHand, BlackjackHand} from '../blackjack/hand';
 import {Buttons, DOMElements, Outcome} from './types';
 
-export default class Game {
+export default class Blackjack {
   deck: Deck;
   playerHand: PlayerHand;
   dealerHand: DealerHand;
-  splitHands: Hand[];
+  splitHands: BlackjackHand[];
   splitIndex: null | 0 | 1;
   isOver: boolean;
   wins: number;
@@ -52,7 +52,7 @@ export default class Game {
     this.buttons.reset!.onclick = this.reset;
   }
 
-  start() {
+  async start() {
     this.isOver = false;
     this.elements.feedback!.innerHTML = '';
     this.deck.reset();
@@ -133,7 +133,7 @@ export default class Game {
   beginSplit() {
     this.elements.feedback!.innerHTML = '';
     for (const card of this.playerHand.cards) {
-      this.splitHands.push(new Hand([card]));
+      this.splitHands.push(new BlackjackHand([card]));
     }
     this.splitIndex = 0;
     this.continueSplit();
@@ -154,7 +154,7 @@ export default class Game {
     }
   }
 
-  determineOutcome(hand: Hand): Outcome {
+  determineOutcome(hand: BlackjackHand): Outcome {
     const playerValue = hand.value();
     const dealerValue = this.dealerHand.value();
     if (
@@ -248,7 +248,7 @@ export default class Game {
     return 'hit';
   }
 
-  renderHand(hand: Hand) {
+  renderHand(hand: BlackjackHand) {
     const isDealer = hand instanceof DealerHand;
     if (isDealer) {
       this.elements.dealerHand!.innerHTML = this.dealerHand.html(this.isOver);

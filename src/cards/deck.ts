@@ -2,6 +2,9 @@ import Card from './card';
 import {SPADES, HEARTS, DIAMONDS, CLUBS} from './suits';
 
 export default class Deck {
+  suits = [SPADES, HEARTS, DIAMONDS, CLUBS] as const;
+  ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
+  cardClass = Card;
   cards: Card[];
 
   constructor() {
@@ -39,8 +42,8 @@ export default class Deck {
   }
 
   getInitialCards() {
-    const suits = [SPADES, HEARTS, DIAMONDS, CLUBS];
-    const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    return suits.flatMap((s) => values.map((v) => new Card(s, v)));
+    return this.suits.flatMap((s) =>
+      this.ranks.map((r) => new this.cardClass(s, r))
+    );
   }
 }
