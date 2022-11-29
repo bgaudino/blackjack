@@ -8,6 +8,7 @@ const buttons = {
   reset: document.querySelector<HTMLButtonElement>('#reset'),
   suggest: document.querySelector<HTMLButtonElement>('#suggest'),
   updateBet: document.querySelector<HTMLElement>('#updateBet'),
+  restartGame: document.querySelector<HTMLButtonElement>('#restartGame'),
 };
 
 const elements = {
@@ -17,6 +18,7 @@ const elements = {
   bank: document.querySelector<HTMLDivElement>('#bank'),
   bet: document.querySelector<HTMLDivElement>('#bet'),
   betSelect: document.querySelector<HTMLSelectElement>('#betSelect'),
+  dialog: document.querySelector<HTMLDialogElement>('#dialog'),
 };
 
 const game = new Blackjack(buttons, elements);

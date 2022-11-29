@@ -14,6 +14,7 @@ export interface Buttons {
   suggest: Button;
   reset: Button;
   updateBet: DOMElement;
+  restartGame: Button;
 }
 export interface DOMElements {
   playerHand: DOMElement;
@@ -22,4 +23,5 @@ export interface DOMElements {
   bank: DOMElement;
   bet: DOMElement;
   betSelect: DOMElement;
+  dialog: HTMLDialogElement | null;
 }

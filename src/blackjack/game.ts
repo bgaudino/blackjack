@@ -58,6 +58,9 @@ export default class Blackjack {
 
     this.toggleEdit = this.toggleEdit.bind(this);
     this.buttons.updateBet!.onclick = this.toggleEdit;
+
+    this.restart = this.restart.bind(this);
+    this.buttons.restartGame!.onclick = this.restart;
   }
 
   start() {
@@ -93,7 +96,30 @@ export default class Blackjack {
     }
     this.renderMoney();
     this.persistMoney();
+    if (this.bank <= 0) {
+      this.bankrupt();
+      return;
+    }
     this.buttons.deal!.disabled = false;
+  }
+
+  openModal() {
+    this.elements.dialog!.parentElement!.style.display = 'grid';
+    this.elements.dialog!.open = true;
+  }
+
+  closeModal() {
+    this.elements.dialog!.parentElement!.style.display = 'none';
+    this.elements.dialog!.open = false;
+  }
+
+  bankrupt() {
+    this.openModal();
+  }
+
+  restart() {
+    this.reset();
+    this.closeModal();
   }
 
   deal() {
