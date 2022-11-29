@@ -1,6 +1,6 @@
 import Deck from './deck';
 import {DealerHand, PlayerHand, BlackjackHand} from './hand';
-import {Buttons, DOMElements, Outcome} from '../cards/types';
+import {Buttons, DOMElements, Outcome} from './types';
 
 export default class Blackjack {
   deck: Deck;
@@ -9,9 +9,9 @@ export default class Blackjack {
   splitHands: BlackjackHand[];
   splitIndex: null | 0 | 1;
   isOver: boolean;
-  wins: number;
-  losses: number;
+  bank: number;
   buttons: Buttons;
+  bet: number;
   elements: DOMElements;
 
   constructor(buttons: Buttons, elements: DOMElements) {
@@ -23,12 +23,14 @@ export default class Blackjack {
     this.isOver = false;
 
     try {
-      this.wins = JSON.parse(localStorage.getItem('wins') || '0');
-      this.losses = JSON.parse(localStorage.getItem('losses') || '0');
+      this.bank = JSON.parse(localStorage.getItem('bank') || '0');
+      this.bet = JSON.parse(localStorage.getItem('bet') || '0');
     } catch {
-      this.wins = 0;
-      this.losses = 0;
+      this.bank = 1000;
+      this.bet = 100;
     }
+    if (this.bank === 0) this.bank = 1000;
+    if (this.bet === 0 || this.bet > this.bank) this.bet = 100;
 
     this.buttons = buttons;
     this.elements = elements;
@@ -50,17 +52,24 @@ export default class Blackjack {
 
     this.reset = this.reset.bind(this);
     this.buttons.reset!.onclick = this.reset;
+
+    this.updateBet = this.updateBet.bind(this);
+    this.elements.betSelect!.onchange = this.updateBet;
+
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.buttons.updateBet!.onclick = this.toggleEdit;
   }
 
-  async start() {
+  start() {
     this.isOver = false;
+    this.buttons.updateBet!.style.display = 'none';
     this.elements.feedback!.innerHTML = '';
     this.deck.reset();
     this.playerHand.empty();
     this.dealerHand.empty();
     this.splitHands = [];
     this.splitIndex = null;
-    this.renderRecord();
+    this.renderMoney();
     this.deal();
     if (this.playerHand.isBlackjack()) {
       this.end();
@@ -68,6 +77,7 @@ export default class Blackjack {
   }
 
   end() {
+    this.buttons.updateBet!.style.display = 'inline-block';
     this.isOver = true;
     if (!this.playerHand.isBusted()) {
       this.dealerHand.play(this.deck);
@@ -81,8 +91,8 @@ export default class Blackjack {
       const outcomes = this.splitHands.map((h) => this.determineOutcome(h));
       this.renderSplitOutcomes(outcomes);
     }
-    this.renderRecord();
-    this.persistRecord();
+    this.renderMoney();
+    this.persistMoney();
     this.buttons.deal!.disabled = false;
   }
 
@@ -161,11 +171,11 @@ export default class Blackjack {
       hand.isBusted() ||
       (dealerValue > playerValue && !this.dealerHand.isBusted())
     ) {
-      this.losses++;
+      this.bank -= this.bet;
       return 'lose';
     }
     if (this.dealerHand.isBusted() || hand.value() > this.dealerHand.value()) {
-      this.wins++;
+      this.bank += this.bet;
       return 'win';
     }
     return 'push';
@@ -271,9 +281,34 @@ export default class Blackjack {
       .join('');
   }
 
-  renderRecord() {
-    this.elements.wins!.textContent = this.wins.toString();
-    this.elements.losses!.textContent = this.losses.toString();
+  renderMoney() {
+    this.elements.bank!.textContent = `$${this.bank}`;
+    this.elements.bet!.textContent = `$${this.bet}`;
+    this.elements.betSelect!.innerHTML = '';
+
+    for (let i = 100; i <= this.bank; i += 100) {
+      const option = document.createElement('option');
+      option.value = i.toString();
+      option.text = `$${i}`;
+      option.selected = i === this.bet;
+      this.elements.betSelect?.appendChild(option);
+    }
+
+    if (this.bet > this.bank) this.bet = this.bank;
+  }
+
+  updateBet(e: Event) {
+    if (e.target instanceof HTMLSelectElement) {
+      this.bet = Number(e.target.value);
+    }
+    this.renderMoney();
+    this.toggleEdit();
+    this.persistMoney();
+  }
+
+  toggleEdit() {
+    this.elements.betSelect!.hidden = !this.elements.betSelect?.hidden;
+    this.elements.bet!.hidden = !this.elements.bet?.hidden;
   }
 
   renderOutcome(outcome: Outcome) {
@@ -303,16 +338,16 @@ export default class Blackjack {
       .join('<br>');
   }
 
-  persistRecord() {
-    localStorage.setItem('wins', JSON.stringify(this.wins));
-    localStorage.setItem('losses', JSON.stringify(this.losses));
+  persistMoney() {
+    localStorage.setItem('bank', JSON.stringify(this.bank));
+    localStorage.setItem('bet', JSON.stringify(this.bet));
   }
 
   reset() {
-    this.wins = 0;
-    this.losses = 0;
-    this.persistRecord();
-    this.renderRecord();
+    this.bank = 1000;
+    this.bet = 100;
+    this.persistMoney();
+    this.renderMoney();
     this.start();
   }
 }

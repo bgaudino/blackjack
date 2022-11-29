@@ -13,11 +13,13 @@ export interface Buttons {
   deal: Button;
   suggest: Button;
   reset: Button;
+  updateBet: DOMElement;
 }
 export interface DOMElements {
   playerHand: DOMElement;
   dealerHand: DOMElement;
   feedback: DOMElement;
-  wins: DOMElement;
-  losses: DOMElement;
+  bank: DOMElement;
+  bet: DOMElement;
+  betSelect: DOMElement;
 }

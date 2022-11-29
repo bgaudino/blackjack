@@ -6,6 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
   <title>Blackjack</title>
 </head>
 
@@ -14,19 +15,27 @@
     <h1>Blackjack</h1>
     <div id="score" class="grid-container">
       <div>
-        <div>Wins</div>
-        <div id="wins" class="text-large"></div>
+        <div>Bank</div>
+        <div id="bank" class="text-large"></div>
       </div>
-      <div id="result" class="text-large"></div>
+      <div id="result" class="text-large">
+      </div>
       <div>
-        <div>Losses</div>
-        <div id="losses" class="text-large"></div>
+        <div>Bet</div>
+        <div>
+          <select id="betSelect" hidden></select>
+          <span id="bet" class="text-large">
+          </span>
+          <i id="updateBet" class="fas fa-edit"></i>
+        </div>
       </div>
     </div>
     <div class="text-large">Dealer</div>
-    <div id="dealerHand" class="card"></div>
+    <div id="dealerHand" class="card">
+    </div>
     <div class="text-large">You</div>
-    <div id="playerHand" class="card"></div>
+    <div id="playerHand" class="card">
+    </div>
     <div class="grid-container">
       <button id="hit">Hit</button>
       <button id="split">Split</button>
