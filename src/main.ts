@@ -22,4 +22,4 @@ const elements = {
 };
 
 const game = new Blackjack(buttons, elements);
-game.start();
+game.load();

@@ -52,15 +52,23 @@ export default class Blackjack {
 
     this.reset = this.reset.bind(this);
     this.buttons.reset!.onclick = this.reset;
+    this.buttons.restartGame!.onclick = this.reset;
 
     this.updateBet = this.updateBet.bind(this);
     this.elements.betSelect!.onchange = this.updateBet;
 
     this.toggleEdit = this.toggleEdit.bind(this);
     this.buttons.updateBet!.onclick = this.toggleEdit;
+  }
 
-    this.restart = this.restart.bind(this);
-    this.buttons.restartGame!.onclick = this.restart;
+  load() {
+    this.renderPlaceholders();
+    this.isOver = true;
+    this.playerHand.empty();
+    this.dealerHand.empty();
+    this.buttons.deal!.disabled = false;
+    this.disableActions();
+    this.renderMoney();
   }
 
   start() {
@@ -115,11 +123,6 @@ export default class Blackjack {
 
   bankrupt() {
     this.openModal();
-  }
-
-  restart() {
-    this.reset();
-    this.closeModal();
   }
 
   deal() {
@@ -323,6 +326,20 @@ export default class Blackjack {
     if (this.bet > this.bank) this.bet = this.bank;
   }
 
+  renderPlaceholders() {
+    const placeholder = `
+      <div>
+        <div class="points">-</div>
+        <div>
+          <span class="playing-card">&#127136;</span>
+          <span class="playing-card">&#127136;</span>
+        </div>
+      </div>
+    `;
+    this.elements.dealerHand!.innerHTML = placeholder;
+    this.elements.playerHand!.innerHTML = placeholder;
+  }
+
   updateBet(e: Event) {
     if (e.target instanceof HTMLSelectElement) {
       this.bet = Number(e.target.value);
@@ -374,6 +391,7 @@ export default class Blackjack {
     this.bet = 100;
     this.persistMoney();
     this.renderMoney();
-    this.start();
+    this.load();
+    this.closeModal();
   }
 }
